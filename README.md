@@ -2,5 +2,6 @@
 
 ## from a CRUD system to decision-support system.
 
-### using this ai model --- sentence-transformers/all-MiniLM-L6-v2 pre-trained model via API, but still core logic in java
+#### for sematic search
+### using this ai model --- sentence-transformers/all-MiniLM-L6-v2 pre-trained model via API for , but still core logic in java
 
