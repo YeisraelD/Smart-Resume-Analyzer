@@ -1,6 +1,6 @@
 package com.resumescreening.model;
-
-
+// Abstract base class to be extended by sub classes
+// Applied concepts: Abstraction and Encapsulation
 public abstract class Person {
     private String name;
     private String email;
@@ -12,8 +12,10 @@ public abstract class Person {
         this.phone = phone;
     }
 
+    // Abstract method to be implemented in the subclasses
     public abstract double calculateScore();
 
+    //Setters and Getters to encapsulate my super class data
     public String getName(){
         return name;
     }
