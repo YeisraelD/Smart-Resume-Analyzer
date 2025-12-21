@@ -49,11 +49,11 @@ public class Candidate extends Person {
         this.education = education;
     }
 
-    public int getExperienceYear(){
+    public int getExperienceYears(){
         return experienceYear;
     }
 
-    public void setExperienceYear(int experienceYear){
+    public void setExperienceYears(int experienceYear){
         this.experienceYear = experienceYear;
     }
 
