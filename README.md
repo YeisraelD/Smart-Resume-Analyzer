@@ -28,8 +28,17 @@ Smart Hire explores how AI-assisted tools can support recruiters by providing cl
 ### Intelligence Behind the System
 
 At the core of Smart Hire is a pre-trained Natural Language Processing (NLP) model used to extract meaning from text rather than just matching keywords.
+[sentence-transformers/all-MiniLM-L6-v2](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2) hosted on Hugging Face.
 
-This allows the system to:
+Why this model? I chose the all-MiniLM-L6-v2 for its perfect balance of speed and intelligence. It is a "mini" model, meaning it is incredibly fast for real-time applications like a JavaFX dashboard, yet it is trained on over 1 billion sentence pairs to ensure it understands professional context deeply.
+
+#### Model Specifications:
+- Dimensions: 384 (providing a rich mathematical "fingerprint" of each resume)
+- Max Sequence Length: 256 tokens (ideal for concise resume bullet points)
+- Input: Raw text from PDF/DOCX
+- Output: Dense vector space for high-speed cosine similarity comparison
+
+#### This allows the system to:
 
 - Recognize related skills and concepts
 - Understand context within resumes
