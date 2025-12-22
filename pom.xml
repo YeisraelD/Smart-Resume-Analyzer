@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- WHO ARE YOU? -->
     <groupId>com.resumescreening</groupId>
     <artifactId>intelligent-resume-screener</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <!-- JAVA VERSION -->
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>17</maven.compiler.source>
@@ -17,9 +15,8 @@
         <javafx.version>21</javafx.version>
     </properties>
 
-    <!-- INGREDIENTS (LIBRARIES) -->
     <dependencies>
-        <!-- JavaFX: Tool for making the GUI Window -->
+        <!-- JavaFX -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
@@ -31,21 +28,21 @@
             <version>${javafx.version}</version>
         </dependency>
 
-        <!-- PDFBox: Tool for reading PDF files -->
-        <dependency>
-            <groupId>org.apache.pdfbox</groupId>
-            <artifactId>pdfbox</artifactId>
-            <version>2.0.29</version>
-        </dependency>
-
-        <!-- JSON: Tool to speak to the AI API -->
+        <!-- JSON Processing -->
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20231013</version>
         </dependency>
 
-        <!-- Logging: Helps see errors clearly -->
+        <!-- PDF Processing -->
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>2.0.29</version>
+        </dependency>
+
+        <!-- Logging (Optional but good practice) -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
@@ -53,10 +50,8 @@
         </dependency>
     </dependencies>
 
-    <!-- INSTRUCTIONS (BUILD PLUGINS) -->
     <build>
         <plugins>
-            <!-- Compiler Plugin: Tells Java to use Version 17 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -66,7 +61,6 @@
                     <target>17</target>
                 </configuration>
             </plugin>
-            <!-- JavaFX Plugin: Key to running 'mvn javafx:run' -->
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>

@@ -165,12 +165,13 @@ public class ScoringEngine {
 
         candidate.setMatchedSkills(matchedTech);
         candidate.setMissingSkills(missingTech);
+        candidate.setMatchedSoftSkills(matchedSoft); // Store structured soft skills
 
         // Advanced Role Recommendation logic
         String role = determineRole(matchedTech);
         candidate.setRecommendedRole(role);
 
-        // Build Detailed Analysis
+        // Build Detailed Analysis & Structured Education
         StringBuilder analysis = new StringBuilder();
         analysis.append("--- CANDIDATE ANALYSIS REPORT ---\n\n");
 
@@ -205,16 +206,20 @@ public class ScoringEngine {
         analysis.append("[4. EXPERIENCE & EDUCATION]\n");
         analysis.append("- Estimated Experience: ").append(candidate.getExperienceYears()).append(" years.\n");
         boolean hasEdu = false;
+        String detectedEdu = "Experience Based";
         for (String edu : educationKeywords) {
             if (resumeText.contains(edu)) {
-                analysis.append("- Education noted: ").append(edu.substring(0, 1).toUpperCase() + edu.substring(1))
-                        .append(" detected.\n");
+                String eduNice = edu.substring(0, 1).toUpperCase() + edu.substring(1);
+                analysis.append("- Education noted: ").append(eduNice).append(" detected.\n");
+                detectedEdu = eduNice + " Level";
                 hasEdu = true;
                 break;
             }
         }
         if (!hasEdu)
             analysis.append("- Specific degree not explicitly parsed.\n");
+
+        candidate.setEducationSummary(detectedEdu); // Store structured education
         analysis.append("\n");
 
         analysis.append("[5. SUMMARY RECOMMENDATION]\n");

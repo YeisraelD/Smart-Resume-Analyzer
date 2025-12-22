@@ -1,0 +1,8 @@
+com\resumescreening\model\Candidate.class
+com\resumescreening\service\ScoringEngine.class
+com\resumescreening\service\ResumeParser.class
+com\resumescreening\model\JobDescription.class
+com\resumescreening\ui\GUIController$1.class
+com\resumescreening\ui\GUIController.class
+com\resumescreening\model\Person.class
+com\resumescreening\ui\MainApp.class

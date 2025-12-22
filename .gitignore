@@ -1,0 +1,17 @@
+.apache-maven-3.9.6/*
+.target/
+*.log
+*.tmp
+*.bak
+*.swp
+.DS_Store
+.idea/
+.vscode/
+*.iml
+out/
+build/
+dist/
+node_modules/
+.env
+.env.local
+.env.*.local

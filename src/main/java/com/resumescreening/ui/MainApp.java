@@ -3,7 +3,6 @@ package com.resumescreening.ui;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
@@ -24,12 +23,23 @@ public class MainApp extends Application {
             System.err.println("Could not load icon: " + e.getMessage());
         }
 
-        GUIController controller = new GUIController(primaryStage);
-        VBox root = controller.createLayout();
+        try {
+            // Load FXML
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
+                    getClass().getResource("/com/resumescreening/ui/ResumeAnalyzerView.fxml"));
+            javafx.scene.Parent root = loader.load();
 
-        Scene scene = new Scene(root, 800, 600);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+            // Get Controller and pass stage
+            GUIController controller = loader.getController();
+            controller.setStage(primaryStage);
+
+            Scene scene = new Scene(root, 1000, 700);
+            primaryStage.setScene(scene);
+            primaryStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Failed to load FXML: " + e.getMessage());
+        }
     }
 
     public static void main(String[] args) {

@@ -7,10 +7,16 @@ import com.resumescreening.service.ScoringEngine;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.*;
+import javafx.animation.ScaleTransition;
+import javafx.util.Duration;
+import javafx.fxml.FXML;
+import javafx.scene.chart.PieChart;
+
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -32,203 +38,225 @@ public class GUIController {
     private ScoringEngine scoringEngine;
 
     // UI Components
+    @FXML
+    private BorderPane root;
+    @FXML
     private TextArea jdArea;
+    @FXML
     private TextField apiKeyField;
+    @FXML
     private TableView<Candidate> resultsTable;
+    @FXML
+    private TableColumn<Candidate, String> nameCol;
+    @FXML
+    private TableColumn<Candidate, Double> scoreCol;
+    @FXML
+    private TableColumn<Candidate, String> skillsCol;
+    @FXML
+    private TableColumn<Candidate, String> roleCol;
+
+    @FXML
     private Label statusLabel;
+    @FXML
+    private Label resumeCountLabel;
+    @FXML
+    private ImageView logoView;
+
+    @FXML
+    private Button uploadButton;
+    @FXML
+    private Button analyzeButton;
+    @FXML
+    private Button clearButton;
+
+    // Details Components
+    @FXML
+    private ScrollPane detailsScrollPane;
+    @FXML
+    private VBox detailsContent;
+
+    // Chart Components
+    @FXML
+    private PieChart skillsChart;
 
     private List<File> selectedFiles = new ArrayList<>();
 
-    public GUIController(Stage primaryStage) {
-        this.primaryStage = primaryStage;
-        this.scoringEngine = new ScoringEngine(""); // Initialize with empty key
+    public GUIController() {
+        // Default constructor for FXML
+        this.scoringEngine = new ScoringEngine("");
     }
 
-    public VBox createLayout() {
-        VBox root = new VBox(20);
-        root.setStyle(
-                "-fx-padding: 30; -fx-alignment: top-left; -fx-font-family: 'Segoe UI', sans-serif; -fx-background-color: linear-gradient(to bottom right, #f4f6f8, #e0eafc);");
+    public void setStage(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+    }
 
-        // Header Section with Logo
-        VBox headerBox = new VBox(15);
-        headerBox.setStyle("-fx-alignment: center; -fx-padding: 0 0 10 0;");
+    @FXML
+    public void initialize() {
+        setupLogo();
+        setupTable();
+        setupSelectionListener();
 
-        ImageView logoView = new ImageView();
+        // Initialize simple state
+        resumeCountLabel.setText("No resumes uploaded");
+        statusLabel.setText("Ready.");
+    }
+
+    private void setupLogo() {
         try {
-            // Updated loading logic to be more resilient
             java.io.InputStream is = getClass().getResourceAsStream("/images/logo.png");
             if (is != null) {
                 Image logo = new Image(is);
                 logoView.setImage(logo);
-                logoView.setFitHeight(120); // Made it much bigger
-                logoView.setPreserveRatio(true);
-            } else {
-                System.err.println("Logo resource not found at /images/logo.png");
+
+                // --- Logo Animation ---
+                ScaleTransition pulse = new ScaleTransition(Duration.millis(1200), logoView);
+                pulse.setFromX(1.0);
+                pulse.setFromY(1.0);
+                pulse.setToX(1.05);
+                pulse.setToY(1.05);
+                pulse.setCycleCount(javafx.animation.Animation.INDEFINITE);
+                pulse.setAutoReverse(true);
+                pulse.play();
             }
         } catch (Exception e) {
             System.err.println("Could not load logo: " + e.getMessage());
         }
+    }
 
-        VBox titleBox = new VBox(5);
-        titleBox.setStyle("-fx-alignment: center;");
-        Label header = new Label("Intelligent Resume Screener");
-        header.setStyle(
-                "-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #2c3e50; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 2);");
-
-        Label subHeader = new Label("Powered by Smart Hire Technology");
-        subHeader.setStyle("-fx-font-size: 14px; -fx-text-fill: #7f8c8d; -fx-font-style: italic;");
-
-        titleBox.getChildren().addAll(header, subHeader);
-        headerBox.getChildren().addAll(logoView, titleBox);
-
-        // API Key Section
-        VBox apiBox = new VBox(5);
-        Label apiKeyLabel = new Label("Hugging Face API Key (Optional for AI scoring):");
-        apiKeyLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #555; -fx-font-size: 14px;");
-        apiKeyField = new TextField();
-        apiKeyField.setPromptText("Enter API Key here...");
-        apiKeyField.setStyle(
-                "-fx-padding: 12; -fx-background-radius: 8; -fx-border-radius: 8; -fx-background-color: white; -fx-border-color: #dcdcdc;");
-        apiBox.getChildren().addAll(apiKeyLabel, apiKeyField);
-
-        // Job Description Section
-        VBox jdBox = new VBox(5);
-        Label jdLabel = new Label("Job Description:");
-        jdLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #555; -fx-font-size: 14px;");
-        jdArea = new TextArea();
-        jdArea.setPromptText("Paste Job Description here...");
-        jdArea.setPrefRowCount(12); // Increased Height
-        jdArea.setWrapText(true);
-        jdArea.setStyle(
-                "-fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #dcdcdc; -fx-control-inner-background: white; -fx-font-size: 13px;");
-        jdBox.getChildren().addAll(jdLabel, jdArea);
-
-        // Controls
-        HBox controls = new HBox(15);
-        controls.setStyle("-fx-padding: 10 0;");
-
-        Button uploadButton = new Button("Upload Resumes");
-        uploadButton.setStyle(
-                "-fx-background-color: #3498db; -fx-text-fill: white; -fx-padding: 12 25; -fx-background-radius: 20; -fx-font-weight: bold; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 5, 0, 0, 1);");
-        uploadButton.setOnAction(e -> handleFileUpload());
-
-        Button clearButton = new Button("Clear");
-        clearButton.setStyle(
-                "-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-padding: 12 25; -fx-background-radius: 20; -fx-font-weight: bold; -fx-cursor: hand;");
-        clearButton.setOnAction(e -> handleClear());
-
-        Button analyzeButton = new Button("Analyze Candidates");
-        analyzeButton.setStyle(
-                "-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 12 25; -fx-background-radius: 20; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 5, 0, 0, 1);");
-        analyzeButton.setOnAction(e -> handleAnalysis());
-
-        statusLabel = new Label("No resumes selected.");
-        statusLabel.setStyle("-fx-text-fill: #7f8c8d; -fx-font-style: italic; -fx-padding: 12 0; -fx-font-size: 13px;");
-
-        controls.getChildren().addAll(uploadButton, clearButton, analyzeButton, statusLabel);
-
-        // Results Table
-        Label tableLabel = new Label("Analysis Results:");
-        tableLabel
-                .setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2c3e50; -fx-padding: 10 0 5 0;");
-
-        resultsTable = new TableView<>();
-        resultsTable.setStyle(
-                "-fx-background-color: white; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 10, 0, 0, 0); -fx-background-radius: 5; -fx-border-radius: 5;");
-        resultsTable.setPrefHeight(250); // Fixed initial height, but allows resizing
-
-        TableColumn<Candidate, String> nameCol = new TableColumn<>("Name");
+    private void setupTable() {
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-        nameCol.setStyle("-fx-alignment: CENTER-LEFT; -fx-font-weight: bold; -fx-font-size: 13px;");
 
-        TableColumn<Candidate, Double> scoreCol = new TableColumn<>("Match Score");
         scoreCol.setCellValueFactory(new PropertyValueFactory<>("currentScore"));
         scoreCol.setCellFactory(tc -> new TableCell<>() {
             @Override
             protected void updateItem(Double item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText(null);
-                    setStyle("");
-                } else {
+                setText(null);
+                setStyle(""); // Reset
+                if (!empty && item != null) {
                     setText(String.format("%.1f%%", item));
-                    if (item >= 70) {
-                        setStyle("-fx-text-fill: #27ae60; -fx-font-weight: bold; -fx-alignment: CENTER;");
-                    } else if (item >= 40) {
-                        setStyle("-fx-text-fill: #f39c12; -fx-font-weight: bold; -fx-alignment: CENTER;");
-                    } else {
-                        setStyle("-fx-text-fill: #c0392b; -fx-font-weight: bold; -fx-alignment: CENTER;");
-                    }
+                    String baseStyle = "-fx-font-weight: bold; -fx-alignment: CENTER; -fx-background-radius: 10; -fx-padding: 2 8; ";
+                    if (item >= 70)
+                        setStyle(baseStyle + "-fx-text-fill: #00b894; -fx-background-color: rgba(0, 184, 148, 0.1);");
+                    else if (item >= 40)
+                        setStyle(baseStyle + "-fx-text-fill: #fdcb6e; -fx-background-color: rgba(253, 203, 110, 0.1);");
+                    else
+                        setStyle(baseStyle + "-fx-text-fill: #ff7675; -fx-background-color: rgba(255, 118, 117, 0.1);");
                 }
             }
         });
 
-        // Analytical Columns
-        TableColumn<Candidate, String> statusCol = new TableColumn<>("Status");
-        statusCol.setCellValueFactory(cellData -> {
-            double s = cellData.getValue().calculateScore();
-            if (s >= 70)
-                return new javafx.beans.property.SimpleStringProperty("High Match");
-            if (s >= 40)
-                return new javafx.beans.property.SimpleStringProperty("Potential");
-            return new javafx.beans.property.SimpleStringProperty("Low Match");
-        });
-        statusCol.setStyle("-fx-alignment: CENTER;");
-
-        TableColumn<Candidate, String> skillsCol = new TableColumn<>("Top Skills Found");
         skillsCol.setCellValueFactory(cellData -> {
             List<String> skills = cellData.getValue().getMatchedSkills();
             String summary = skills.isEmpty() ? "-" : String.join(", ", skills);
             return new javafx.beans.property.SimpleStringProperty(summary);
         });
 
-        TableColumn<Candidate, String> roleCol = new TableColumn<>("Recommended Role");
         roleCol.setCellValueFactory(new PropertyValueFactory<>("recommendedRole"));
-
-        // Add columns
-        resultsTable.getColumns().add(nameCol);
-        resultsTable.getColumns().add(scoreCol);
-        resultsTable.getColumns().add(statusCol);
-        resultsTable.getColumns().add(skillsCol);
-        resultsTable.getColumns().add(roleCol);
-
-        resultsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
-
-        // Detail View
-        Label detailsLabel = new Label("Deep Dive Analysis:");
-        detailsLabel
-                .setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-padding: 15 0 5 0; -fx-text-fill: #2c3e50;");
-
-        TextArea detailsArea = new TextArea();
-        detailsArea.setEditable(false);
-        detailsArea.setPromptText("Select a candidate above to see full skill gap analysis...");
-        detailsArea.setStyle(
-                "-fx-control-inner-background: #fff; -fx-font-family: 'Consolas', monospace; -fx-font-size: 13px; -fx-border-color: #dcdcdc; -fx-border-radius: 5;");
-        detailsArea.setPrefRowCount(15); // Increased Height significantly
-
-        // Let lists expand
-        VBox.setVgrow(resultsTable, javafx.scene.layout.Priority.ALWAYS);
-        VBox.setVgrow(detailsArea, javafx.scene.layout.Priority.ALWAYS);
-
-        resultsTable.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
-            if (newVal != null) {
-                detailsArea.setText(newVal.getAnalysisDetails());
-            } else {
-                detailsArea.setText("");
-            }
-        });
-
-        root.getChildren().addAll(
-                headerBox,
-                apiBox,
-                jdBox,
-                controls,
-                tableLabel, resultsTable,
-                detailsLabel, detailsArea);
-
-        return root;
     }
 
+    private void setupSelectionListener() {
+        resultsTable.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            updateDeepDive(newVal);
+        });
+    }
+
+    // SOFT DARK HOVER HANDLERS
+    @FXML
+    private void handleButtonHover(MouseEvent event) {
+        uploadButton.setStyle(
+                "-fx-background-color: #00a8ff; -fx-text-fill: black; -fx-font-weight: bold; -fx-background-radius: 25; -fx-border-color: #00a8ff; -fx-border-radius: 25; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(0, 168, 255, 0.4), 10, 0, 0, 0);");
+    }
+
+    @FXML
+    private void handleButtonExit(MouseEvent event) {
+        uploadButton.setStyle(
+                "-fx-background-color: transparent; -fx-text-fill: #00a8ff; -fx-font-weight: bold; -fx-background-radius: 25; -fx-border-color: #00a8ff; -fx-border-radius: 25; -fx-cursor: hand;");
+    }
+
+    @FXML
+    private void handleAnalyzeHover(MouseEvent event) {
+        analyzeButton.setStyle(
+                "-fx-background-color: #9c88ff; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 25; -fx-border-color: #9c88ff; -fx-border-radius: 25; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(156, 136, 255, 0.4), 10, 0, 0, 0);");
+    }
+
+    @FXML
+    private void handleAnalyzeExit(MouseEvent event) {
+        analyzeButton.setStyle(
+                "-fx-background-color: transparent; -fx-text-fill: #9c88ff; -fx-font-weight: bold; -fx-background-radius: 25; -fx-border-color: #9c88ff; -fx-border-radius: 25; -fx-cursor: hand;");
+    }
+
+    private void updateDeepDive(Candidate c) {
+        if (c != null) {
+            // --- Update Cards ---
+            detailsContent.getChildren().clear();
+
+            // 1. Recommendation Card
+            String recColor = c.getCurrentScore() >= 70 ? "#00b894"
+                    : (c.getCurrentScore() >= 40 ? "#fdcb6e" : "#ff7675");
+            detailsContent.getChildren().add(createCard("Recommendation",
+                    "Role: " + c.getRecommendedRole() + "\n" +
+                            (c.getCurrentScore() >= 70 ? "Highly Recommended for Interview." : "Review with Caution."),
+                    recColor));
+
+            // 2. Technical Strengths
+            List<String> matched = c.getMatchedSkills();
+            String matchedText = matched.isEmpty() ? "No specific matches found." : String.join(", ", matched);
+            detailsContent.getChildren().add(createCard("Technical Strengths", matchedText, "#0984e3"));
+
+            // 3. Skill Gaps
+            List<String> missing = c.getMissingSkills();
+            String missingText = missing.isEmpty() ? "None! Perfect Match." : String.join(", ", missing);
+            detailsContent.getChildren().add(createCard("Skill Gaps", missingText, "#e17055"));
+
+            // 4. Soft Skills
+            List<String> soft = c.getMatchedSoftSkills();
+            String softText = soft.isEmpty() ? "Professional qualities implied." : String.join(", ", soft);
+            detailsContent.getChildren().add(createCard("Soft Skills", softText, "#6c5ce7"));
+
+            // 5. Education & Exp
+            String eduText = "Experience: " + c.getExperienceYears() + " Years\n" +
+                    "Education: " + c.getEducationSummary();
+            detailsContent.getChildren().add(createCard("Education & Experience", eduText, "#8e44ad"));
+
+            // --- Update Chart ---
+            int matchedCount = c.getMatchedSkills().size();
+            int missingCount = c.getMissingSkills().size();
+
+            if (matchedCount == 0 && missingCount == 0) {
+                skillsChart.setData(FXCollections.observableArrayList(new PieChart.Data("No Data", 1)));
+            } else {
+                ObservableList<PieChart.Data> pieData = FXCollections.observableArrayList(
+                        new PieChart.Data("Matched", matchedCount),
+                        new PieChart.Data("Missing", missingCount));
+                skillsChart.setData(pieData);
+            }
+        } else {
+            detailsContent.getChildren().clear();
+            skillsChart.setData(FXCollections.observableArrayList());
+        }
+    }
+
+    private VBox createCard(String title, String content, String colorHex) {
+        VBox card = new VBox(5);
+        // DARK CARD STYLE
+        card.setStyle(
+                "-fx-background-color: #161b22; -fx-background-radius: 5; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 10, 0, 0, 0); -fx-padding: 15; -fx-border-color: "
+                        + colorHex + "; -fx-border-width: 0 0 0 2;");
+
+        Label titleLabel = new Label(title);
+        titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: " + colorHex + ";");
+
+        Label contentLabel = new Label(content);
+        contentLabel.setWrapText(true);
+        // LIGHT TEXT FOR DARK BG
+        contentLabel.setStyle("-fx-text-fill: #c9d1d9; -fx-font-size: 13px;");
+
+        card.getChildren().addAll(titleLabel, contentLabel);
+        return card;
+    }
+
+    @FXML
     private void handleFileUpload() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select Resumes");
@@ -239,16 +267,22 @@ public class GUIController {
         List<File> files = fileChooser.showOpenMultipleDialog(primaryStage);
         if (files != null) {
             selectedFiles.addAll(files);
-            statusLabel.setText(selectedFiles.size() + " resume(s) ready to analyze.");
+            statusLabel.setText("Uploaded " + files.size() + " files. Total: " + selectedFiles.size());
+            resumeCountLabel.setText("Uploaded: " + selectedFiles.size() + " resumes");
         }
     }
 
+    @FXML
     private void handleClear() {
         selectedFiles.clear();
         resultsTable.getItems().clear();
-        statusLabel.setText("Selection cleared.");
+        detailsContent.getChildren().clear();
+        skillsChart.setData(FXCollections.observableArrayList());
+        statusLabel.setText("Cleared workspace.");
+        resumeCountLabel.setText("No resumes uploaded");
     }
 
+    @FXML
     private void handleAnalysis() {
         String jdText = jdArea.getText();
         if (jdText.isEmpty()) {

@@ -80,6 +80,26 @@ public class Candidate extends Person {
         this.analysisDetails = analysisDetails;
     }
 
+    // New Structured Data for Cards
+    private List<String> matchedSoftSkills = new ArrayList<>();
+    private String educationSummary = "Not specified";
+
+    public List<String> getMatchedSoftSkills() {
+        return matchedSoftSkills;
+    }
+
+    public void setMatchedSoftSkills(List<String> matchedSoftSkills) {
+        this.matchedSoftSkills = matchedSoftSkills;
+    }
+
+    public String getEducationSummary() {
+        return educationSummary;
+    }
+
+    public void setEducationSummary(String educationSummary) {
+        this.educationSummary = educationSummary;
+    }
+
     public List<String> getMatchedSkills() {
         return matchedSkills;
     }
