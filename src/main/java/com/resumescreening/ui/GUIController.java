@@ -135,13 +135,16 @@ public class GUIController {
                 setStyle(""); // Reset
                 if (!empty && item != null) {
                     setText(String.format("%.1f%%", item));
-                    String baseStyle = "-fx-font-weight: bold; -fx-alignment: CENTER; -fx-background-radius: 10; -fx-padding: 2 8; ";
+                    String baseStyle = "-fx-font-weight: bold; -fx-alignment: CENTER; -fx-background-radius: 12; -fx-padding: 3 10; -fx-font-size: 13px; ";
                     if (item >= 70)
-                        setStyle(baseStyle + "-fx-text-fill: #00b894; -fx-background-color: rgba(0, 184, 148, 0.1);");
+                        setStyle(baseStyle
+                                + "-fx-text-fill: white; -fx-background-color: linear-gradient(to right, #00b894, #55efc4); -fx-effect: dropshadow(three-pass-box, rgba(0, 184, 148, 0.3), 5, 0, 0, 0);");
                     else if (item >= 40)
-                        setStyle(baseStyle + "-fx-text-fill: #fdcb6e; -fx-background-color: rgba(253, 203, 110, 0.1);");
+                        setStyle(baseStyle
+                                + "-fx-text-fill: white; -fx-background-color: linear-gradient(to right, #f39c12, #f1c40f); -fx-effect: dropshadow(three-pass-box, rgba(243, 156, 18, 0.3), 5, 0, 0, 0);");
                     else
-                        setStyle(baseStyle + "-fx-text-fill: #ff7675; -fx-background-color: rgba(255, 118, 117, 0.1);");
+                        setStyle(baseStyle
+                                + "-fx-text-fill: white; -fx-background-color: linear-gradient(to right, #e74c3c, #ff7675); -fx-effect: dropshadow(three-pass-box, rgba(231, 76, 60, 0.3), 5, 0, 0, 0);");
                 }
             }
         });
@@ -165,25 +168,25 @@ public class GUIController {
     @FXML
     private void handleButtonHover(MouseEvent event) {
         uploadButton.setStyle(
-                "-fx-background-color: #00a8ff; -fx-text-fill: black; -fx-font-weight: bold; -fx-background-radius: 25; -fx-border-color: #00a8ff; -fx-border-radius: 25; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(0, 168, 255, 0.4), 10, 0, 0, 0);");
+                "-fx-background-color: linear-gradient(to right, #00c6ff, #0072ff); -fx-background-radius: 30; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(0, 114, 255, 0.6), 15, 0, 0, 0);");
     }
 
     @FXML
     private void handleButtonExit(MouseEvent event) {
         uploadButton.setStyle(
-                "-fx-background-color: transparent; -fx-text-fill: #00a8ff; -fx-font-weight: bold; -fx-background-radius: 25; -fx-border-color: #00a8ff; -fx-border-radius: 25; -fx-cursor: hand;");
+                "-fx-background-color: linear-gradient(to right, #4facfe 0%, #00f2fe 100%); -fx-background-radius: 30; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;");
     }
 
     @FXML
     private void handleAnalyzeHover(MouseEvent event) {
         analyzeButton.setStyle(
-                "-fx-background-color: #9c88ff; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 25; -fx-border-color: #9c88ff; -fx-border-radius: 25; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(156, 136, 255, 0.4), 10, 0, 0, 0);");
+                "-fx-background-color: linear-gradient(to right, #8e2de2, #4a00e0); -fx-background-radius: 30; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(74, 0, 224, 0.6), 15, 0, 0, 0);");
     }
 
     @FXML
     private void handleAnalyzeExit(MouseEvent event) {
         analyzeButton.setStyle(
-                "-fx-background-color: transparent; -fx-text-fill: #9c88ff; -fx-font-weight: bold; -fx-background-radius: 25; -fx-border-color: #9c88ff; -fx-border-radius: 25; -fx-cursor: hand;");
+                "-fx-background-color: linear-gradient(to right, #667eea 0%, #764ba2 100%); -fx-background-radius: 30; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;");
     }
 
     private void updateDeepDive(Candidate c) {
@@ -239,18 +242,18 @@ public class GUIController {
 
     private VBox createCard(String title, String content, String colorHex) {
         VBox card = new VBox(5);
-        // DARK CARD STYLE
+        // CANDY COLOR GLASS STYLE
         card.setStyle(
-                "-fx-background-color: #161b22; -fx-background-radius: 5; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 10, 0, 0, 0); -fx-padding: 15; -fx-border-color: "
-                        + colorHex + "; -fx-border-width: 0 0 0 2;");
+                "-fx-background-color: rgba(255, 255, 255, 0.85); -fx-background-radius: 12; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 4); -fx-padding: 15; -fx-border-color: "
+                        + colorHex + "; -fx-border-width: 0 0 0 5; -fx-border-radius: 2;");
 
         Label titleLabel = new Label(title);
-        titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: " + colorHex + ";");
+        titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 15px; -fx-text-fill: #4a148c;");
 
         Label contentLabel = new Label(content);
         contentLabel.setWrapText(true);
-        // LIGHT TEXT FOR DARK BG
-        contentLabel.setStyle("-fx-text-fill: #c9d1d9; -fx-font-size: 13px;");
+        // RICH DARK PURPLE TEXT
+        contentLabel.setStyle("-fx-text-fill: #4a148c; -fx-font-size: 13.5px; -fx-font-weight: 500;");
 
         card.getChildren().addAll(titleLabel, contentLabel);
         return card;

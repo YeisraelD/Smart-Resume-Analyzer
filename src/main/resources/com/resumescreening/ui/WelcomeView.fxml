@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Circle?>
+
+<StackPane fx:id="rootPane" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: linear-gradient(to bottom right, #e0c3fc, #8ec5fc);" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.resumescreening.ui.WelcomeController">
+   <children>
+      <VBox alignment="CENTER" maxHeight="600.0" maxWidth="750.0" minHeight="500.0" minWidth="500.0" spacing="30.0" style="-fx-background-color: rgba(255, 255, 255, 0.3); -fx-background-radius: 30; -fx-border-color: rgba(255, 255, 255, 0.5); -fx-border-radius: 30; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.15), 30, 0, 0, 0);" StackPane.alignment="CENTER">
+         <children>
+            <VBox alignment="CENTER" spacing="10.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <ImageView fx:id="logoView" fitHeight="150.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label text="SMART HIRE" textFill="#4a148c">
+                     <font>
+                        <Font name="System Bold" size="56.0" />
+                     </font>
+                     <style>
+                        -fx-letter-spacing: 5px; -fx-effect: dropshadow(two-pass-box, rgba(102, 126, 234, 0.5), 15, 0, 0, 0);
+                     </style>
+                  </Label>
+                  <Label text="The Future of Intelligent Recruitment" textFill="#6a1b9a" wrapText="true">
+                     <font>
+                        <Font name="System Italic" size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+            
+            <VBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-padding: 20 0;" VBox.vgrow="SOMETIMES">
+               <children>
+                  <Label text="• AI-Powered Semantic Analysis" textFill="#4a148c">
+                     <font><Font name="System Bold" size="18.0" /></font>
+                  </Label>
+                  <Label text="• Real-time Candidate Match Scoring" textFill="#4a148c">
+                     <font><Font name="System Bold" size="18.0" /></font>
+                  </Label>
+                  <Label text="• Deep Dive Skill Gap Visualization" textFill="#4a148c">
+                     <font><Font name="System Bold" size="18.0" /></font>
+                  </Label>
+               </children>
+            </VBox>
+            
+            <Button fx:id="startButton" mnemonicParsing="false" onAction="#handleStart" onMouseEntered="#handleHover" onMouseExited="#handleExit" prefWidth="350.0" style="-fx-background-color: linear-gradient(to right, #667eea, #764ba2); -fx-background-radius: 40; -fx-text-fill: white; -fx-cursor: hand; -fx-effect: dropshadow(three-pass-box, rgba(102, 126, 234, 0.4), 20, 0, 0, 10);" text="ENTER SYSTEM">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+               <padding>
+                  <Insets bottom="20.0" top="20.0" />
+               </padding>
+            </Button>
+            
+            <Label text="v1.0-SNAPSHOT | Intelligent Resume Screening" textFill="#5c2d91">
+               <font>
+                  <Font size="12.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+   </children>
+</StackPane>
