@@ -17,7 +17,14 @@ public class MainApp extends Application {
         try {
             java.io.InputStream is = getClass().getResourceAsStream("/images/logo.png");
             if (is != null) {
-                primaryStage.getIcons().add(new Image(is));
+                // Add multiple sizes so the OS can pick the best one for the title bar (small)
+                // vs taskbar (large)
+                primaryStage.getIcons().addAll(
+                        new Image(getClass().getResourceAsStream("/images/logo.png"), 16, 16, true, true),
+                        new Image(getClass().getResourceAsStream("/images/logo.png"), 32, 32, true, true),
+                        new Image(getClass().getResourceAsStream("/images/logo.png"), 64, 64, true, true),
+                        new Image(getClass().getResourceAsStream("/images/logo.png"), 128, 128, true, true),
+                        new Image(getClass().getResourceAsStream("/images/logo.png"), 256, 256, true, true));
             }
         } catch (Exception e) {
             System.err.println("Could not load icon: " + e.getMessage());
