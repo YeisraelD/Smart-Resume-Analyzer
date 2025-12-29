@@ -16,29 +16,42 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="root" style="-fx-background-color: linear-gradient(to bottom right, #e0f2f1, #b2dfdb); -fx-font-family: 'Segoe UI', sans-serif;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.resumescreening.ui.GUIController">
+<BorderPane fx:id="root" style="-fx-background-color: linear-gradient(to bottom right, #e0f2f1, #b2dfdb); -fx-font-family: 'Segoe UI', sans-serif;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.resumescreening.ui.GUIController">
    <top>
-      <VBox fx:id="logoContainer" alignment="CENTER" spacing="10.0" style="-fx-background-color: rgba(255, 255, 255, 0.5); -fx-border-color: transparent transparent linear-gradient(to right, #002d72, #00a2a7) transparent; -fx-border-width: 0 0 3 0; -fx-effect: dropshadow(three-pass-box, rgba(0, 45, 114, 0.1), 15, 0, 0, 0);" BorderPane.alignment="CENTER">
-         <padding>
-            <Insets bottom="15.0" top="15.0" />
-         </padding>
-         <children>
-            <ImageView fx:id="logoView" fitHeight="100.0" pickOnBounds="true" preserveRatio="true" />
-            <Label text="SMART HIRE" textFill="#002d72">
+       <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-background-color: rgba(255, 255, 255, 0.5); -fx-border-color: transparent transparent linear-gradient(to right, #002d72, #00a2a7) transparent; -fx-border-width: 0 0 3 0; -fx-effect: dropshadow(three-pass-box, rgba(0, 45, 114, 0.1), 15, 0, 0, 0);" BorderPane.alignment="CENTER">
+          <padding>
+             <Insets bottom="15.0" left="20.0" right="20.0" top="15.0" />
+          </padding>
+          <children>
+             <ImageView fx:id="logoView" fitHeight="80.0" pickOnBounds="true" preserveRatio="true" />
+             <VBox alignment="CENTER_LEFT">
+                 <children>
+                     <Label text="SMART HIRE" textFill="#002d72">
+                        <font>
+                           <Font name="System Bold" size="32.0" />
+                        </font>
+                        <style>
+                           -fx-letter-spacing: 3px; -fx-effect: dropshadow(two-pass-box, rgba(0, 162, 167, 0.3), 10, 0, 0, 2);
+                        </style>
+                     </Label>
+                     <Label text="AI-Powered Screening" textFill="#00796b">
+                        <font>
+                           <Font name="System Italic" size="14.0" />
+                        </font>
+                     </Label>
+                 </children>
+             </VBox>
+             <javafx.scene.layout.Region HBox.hgrow="ALWAYS" />
+             <Button fx:id="restartButton" mnemonicParsing="false" onAction="#handleRestart" style="-fx-background-color: linear-gradient(to right, #002d72, #00a2a7); -fx-background-radius: 30; -fx-text-fill: white; -fx-cursor: hand;" text="Restart System">
                <font>
-                  <Font name="System Bold" size="38.0" />
+                  <Font name="System Bold" size="13.0" />
                </font>
-               <style>
-                  -fx-letter-spacing: 3px; -fx-effect: dropshadow(two-pass-box, rgba(0, 162, 167, 0.3), 10, 0, 0, 2);
-               </style>
-            </Label>
-            <Label text="AI-Powered Screening" textFill="#00796b">
-               <font>
-                  <Font name="System Italic" size="14.0" />
-               </font>
-            </Label>
-         </children>
-      </VBox>
+               <padding>
+                  <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+               </padding>
+            </Button>
+          </children>
+       </HBox>
    </top>
    <left>
       <VBox minWidth="300.0" prefWidth="350.0" spacing="20.0" style="-fx-background-color: rgba(255, 255, 255, 0.6); -fx-border-color: transparent linear-gradient(to bottom, #002d72, #00a2a7) transparent transparent; -fx-border-width: 0 2 0 0;" BorderPane.alignment="CENTER">
@@ -48,7 +61,7 @@
          <children>
             <VBox spacing="8.0">
                <children>
-                  <Label text="Hugging Face API Key:" textFill="#004d40">
+                  <Label text="Hugging Face API Key (Optional):" textFill="#004d40">
                      <font>
                         <Font name="System Bold" size="13.0" />
                      </font>
@@ -86,7 +99,7 @@
                   <Insets left="5.0" />
                </padding>
             </Label>
-            <Button fx:id="analyzeButton" layoutX="30.0" layoutY="542.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleAnalysis" onMouseEntered="#handleAnalyzeHover" onMouseExited="#handleAnalyzeExit" style="-fx-background-color: linear-gradient(to right, #002d72, #00a2a7); -fx-background-radius: 30; -fx-text-fill: white; -fx-cursor: hand; -fx-effect: dropshadow(three-pass-box, rgba(0, 45, 114, 0.3), 10, 0, 0, 0);" text="Analyze Candidates">
+            <Button fx:id="analyzeButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleAnalysis" onMouseEntered="#handleAnalyzeHover" onMouseExited="#handleAnalyzeExit" style="-fx-background-color: linear-gradient(to right, #002d72, #00a2a7); -fx-background-radius: 30; -fx-text-fill: white; -fx-cursor: hand; -fx-effect: dropshadow(three-pass-box, rgba(0, 45, 114, 0.3), 10, 0, 0, 0);" text="Analyze Candidates">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
@@ -94,7 +107,7 @@
                   <Insets bottom="14.0" left="25.0" right="25.0" top="14.0" />
                </padding>
             </Button>
-            <Button fx:id="clearButton" layoutX="30.0" layoutY="607.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleClear" style="-fx-background-color: linear-gradient(to right, #ff5252, #d32f2f); -fx-background-radius: 30; -fx-text-fill: white; -fx-cursor: hand;" text="Clear Workspace">
+            <Button fx:id="clearButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleClear" style="-fx-background-color: linear-gradient(to right, #ff5252, #d32f2f); -fx-background-radius: 30; -fx-text-fill: white; -fx-cursor: hand;" text="Clear Workspace">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
@@ -102,6 +115,28 @@
                   <Insets bottom="12.0" left="20.0" right="20.0" top="12.0" />
                </padding>
             </Button>
+            
+            <HBox spacing="10">
+               <children>
+                  <Button fx:id="sampleDataButton" HBox.hgrow="ALWAYS" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleLoadSampleData" style="-fx-background-color: linear-gradient(to right, #8e44ad, #6c5ce7); -fx-background-radius: 30; -fx-text-fill: white; -fx-cursor: hand;" text="Demo Data">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="10.0" top="10.0" />
+                     </padding>
+                  </Button>
+                  <Button fx:id="exportButton" HBox.hgrow="ALWAYS" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleExport" style="-fx-background-color: linear-gradient(to right, #34495e, #2c3e50); -fx-background-radius: 30; -fx-text-fill: white; -fx-cursor: hand;" text="Export PDF">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="10.0" top="10.0" />
+                     </padding>
+                  </Button>
+               </children>
+            </HBox>
+
             <Label fx:id="statusLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" text="System Ready" textFill="#002d72">
                <font>
                   <Font name="System Bold" size="11.0" />

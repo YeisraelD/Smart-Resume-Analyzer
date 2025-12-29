@@ -144,9 +144,16 @@ public class ScoringEngine {
         List<String> matchedTech = new ArrayList<>();
         List<String> missingTech = new ArrayList<>();
         List<String> matchedSoft = new ArrayList<>();
+        List<String> allCandidateSkills = new ArrayList<>();
 
         // Analyze Technical Skills
         for (String skill : technicalSkills) {
+            // Check if candidate has the skill regardless of JD
+            if (resumeText.contains(skill)) {
+                allCandidateSkills.add(skill);
+            }
+
+            // Check against JD for matching/missing analysis
             if (jdText.contains(skill)) {
                 if (resumeText.contains(skill)) {
                     matchedTech.add(skill);
@@ -167,8 +174,8 @@ public class ScoringEngine {
         candidate.setMissingSkills(missingTech);
         candidate.setMatchedSoftSkills(matchedSoft); // Store structured soft skills
 
-        // Advanced Role Recommendation logic
-        String role = determineRole(matchedTech);
+        // Advanced Role Recommendation logic using ALL candidate skills
+        String role = determineRole(allCandidateSkills);
         candidate.setRecommendedRole(role);
 
         // Build Detailed Analysis & Structured Education

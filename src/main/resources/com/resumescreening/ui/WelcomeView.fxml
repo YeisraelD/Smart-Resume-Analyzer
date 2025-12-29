@@ -1,28 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.shape.Circle?>
 
-<StackPane fx:id="rootPane" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: linear-gradient(to bottom right, #e0f2f1, #b2dfdb);" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.resumescreening.ui.WelcomeController">
+<StackPane fx:id="rootPane" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: linear-gradient(to bottom right, #e0f2f1, #b2dfdb);" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.resumescreening.ui.WelcomeController">
    <children>
       <VBox alignment="CENTER" maxHeight="600.0" maxWidth="750.0" minHeight="500.0" minWidth="500.0" spacing="30.0" style="-fx-background-color: rgba(255, 255, 255, 0.4); -fx-background-radius: 30; -fx-border-color: rgba(0, 45, 114, 0.3); -fx-border-radius: 30; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0, 45, 114, 0.1), 30, 0, 0, 0);" StackPane.alignment="CENTER">
          <children>
             <VBox alignment="CENTER" spacing="10.0" VBox.vgrow="ALWAYS">
                <children>
                   <ImageView fx:id="logoView" fitHeight="200.0" pickOnBounds="true" preserveRatio="true" />
-                  <Label text="SMART HIRE" textFill="#002d72">
-                     <font>
-                        <Font name="System Bold" size="56.0" />
-                     </font>
-                     <style>
-                        -fx-letter-spacing: 5px; -fx-effect: dropshadow(two-pass-box, rgba(0, 162, 167, 0.3), 15, 0, 0, 0);
-                     </style>
-                  </Label>
                   <Label text="The Future of Intelligent Recruitment" textFill="#00796b" wrapText="true">
                      <font>
                         <Font name="System Italic" size="20.0" />
@@ -31,19 +24,42 @@
                </children>
             </VBox>
             
-            <VBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-padding: 20 0;" VBox.vgrow="SOMETIMES">
+            <HBox alignment="CENTER" spacing="60.0" style="-fx-padding: 20 0;" VBox.vgrow="SOMETIMES">
                <children>
-                  <Label text="• AI-Powered Semantic Analysis" textFill="#002d72">
-                     <font><Font name="System Bold" size="18.0" /></font>
-                  </Label>
-                  <Label text="• Real-time Candidate Match Scoring" textFill="#002d72">
-                     <font><Font name="System Bold" size="18.0" /></font>
-                  </Label>
-                  <Label text="• Deep Dive Skill Gap Visualization" textFill="#002d72">
-                     <font><Font name="System Bold" size="18.0" /></font>
-                  </Label>
+                  <VBox alignment="CENTER" spacing="8.0">
+                     <children>
+                        <ImageView fx:id="iconAi" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
+                        <Label text="AI-Powered" textFill="#002d72">
+                           <font><Font name="System Bold" size="14.0" /></font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" spacing="8.0">
+                     <children>
+                        <ImageView fx:id="iconFair" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
+                        <Label text="Fair &amp; Unbiased" textFill="#002d72">
+                           <font><Font name="System Bold" size="14.0" /></font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" spacing="8.0">
+                     <children>
+                        <ImageView fx:id="iconQuick" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
+                        <Label text="Quick Screening" textFill="#002d72">
+                           <font><Font name="System Bold" size="14.0" /></font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" spacing="8.0">
+                     <children>
+                        <ImageView fx:id="iconSecure" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
+                        <Label text="Secure Data" textFill="#002d72">
+                           <font><Font name="System Bold" size="14.0" /></font>
+                        </Label>
+                     </children>
+                  </VBox>
                </children>
-            </VBox>
+            </HBox>
             
             <Button fx:id="startButton" mnemonicParsing="false" onAction="#handleStart" onMouseEntered="#handleHover" onMouseExited="#handleExit" prefWidth="350.0" style="-fx-background-color: linear-gradient(to right, #002d72, #00a2a7); -fx-background-radius: 40; -fx-text-fill: white; -fx-cursor: hand; -fx-effect: dropshadow(three-pass-box, rgba(0, 45, 114, 0.3), 20, 0, 0, 10);" text="ENTER SYSTEM">
                <font>

@@ -22,23 +22,53 @@ public class WelcomeController {
     @FXML
     private Button startButton;
 
+    // Feature Icons
+    @FXML
+    private ImageView iconAi;
+    @FXML
+    private ImageView iconFair;
+    @FXML
+    private ImageView iconQuick;
+    @FXML
+    private ImageView iconSecure;
+
     @FXML
     public void initialize() {
         // Load logo
         try {
             java.io.InputStream is = getClass().getResourceAsStream("/images/logo.png");
-            if (is != null) {
+            if (is != null)
                 logoView.setImage(new Image(is));
-            }
         } catch (Exception e) {
             System.err.println("Could not load logo in Welcome: " + e.getMessage());
         }
+
+        // Load Feature Icons
+        loadIcon("/images/ai.png", iconAi);
+        loadIcon("/images/fair.png", iconFair);
+        loadIcon("/images/quike.png", iconQuick);
+        loadIcon("/images/secure.png", iconSecure);
 
         // Entrance animation
         rootPane.setOpacity(0);
         FadeTransition fadeIn = new FadeTransition(Duration.millis(1500), rootPane);
         fadeIn.setToValue(1);
         fadeIn.play();
+    }
+
+    private void loadIcon(String path, ImageView view) {
+        if (view == null)
+            return;
+        try {
+            java.io.InputStream is = getClass().getResourceAsStream(path);
+            if (is != null) {
+                view.setImage(new Image(is));
+            } else {
+                System.err.println("Could not find icon: " + path);
+            }
+        } catch (Exception e) {
+            System.err.println("Error loading icon " + path + ": " + e.getMessage());
+        }
     }
 
     @FXML
